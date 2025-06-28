@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: 'うさぎさん', img: 'assets/images/rabbit.png' },
         { name: 'とりさん', img: 'assets/images/bird.png' }
     ];
-    const MAX_DONUTS = 5;
+    // ★★★ 変更点: 上限を 9 に変更 ★★★
+    const MAX_DONUTS = 9;
 
     // --- DOM要素の取得 ---
     const characterImg = document.getElementById('character-img');
@@ -19,21 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentCharacterIndex = 0;
     let targetDonutCount = 0;
     let currentDonutCount = 0;
-    let isBgmPlaying = false; // BGMが再生中かどうかのフラグ
+    let isBgmPlaying = false; 
     
     // --- 音声ファイル ---
-    // ★★★ 変更点: BGMを追加 ★★★
     const bgm = new Audio('assets/audio/simajiro.mp3');
-    bgm.loop = true; // BGMをループ再生する
-    bgm.volume = 0.3; // BGMの音量を少し下げる（0.0 ~ 1.0）
+    bgm.loop = true; 
+    bgm.volume = 0.3; 
 
     const countSounds = {};
     for (let i = 1; i <= MAX_DONUTS; i++) {
         countSounds[i] = new Audio(`assets/audio/count_${i}.wav`);
     }
     const correctSound = new Audio('assets/audio/correct.wav');
-    // ★★★ 変更点: popSoundの定義を削除 ★★★
-    // const popSound = new Audio('assets/audio/pop.wav');
 
     // --- ゲームの初期化・問題設定 ---
     function setupQuestion() {
@@ -52,10 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // --- ドーナツをクリックしたときの処理 ---
-    // ★★★ この関数全体を大幅に修正 ★★★
     function handleDonutClick() {
-        // --- BGMの再生開始 ---
-        // 最初のクリックで一度だけBGMを再生開始する
         if (!isBgmPlaying) {
             bgm.play();
             isBgmPlaying = true;
@@ -67,14 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         currentDonutCount++;
         
-        // お皿にドーナツを追加
         const donutElement = document.createElement('div');
         donutElement.classList.add('placed-donut');
         plateArea.appendChild(donutElement);
 
         const isCorrect = (currentDonutCount === targetDonutCount);
 
-        // --- カウント音声を直接再生 ---
         const countSound = countSounds[currentDonutCount];
         
         if (countSound) {
@@ -82,11 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (isCorrect) {
                 disableDonutClicks();
-                // カウント音声の再生が終わったら、正解処理を呼び出す
                 countSound.addEventListener('ended', showCorrect, { once: true });
             }
         } else if (isCorrect) {
-            // カウント音声がないけれど正解の場合
             disableDonutClicks();
             setTimeout(showCorrect, 800);
         }
