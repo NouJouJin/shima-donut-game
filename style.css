@@ -47,7 +47,7 @@ body {
 /* お皿エリア */
 #plate-area {
     width: 80%;
-    min-height: 80px;
+    min-height: 120px; /* ★ 高さを少し広げました */
     background: #f5f5f5;
     border: 2px dashed #ccc;
     border-radius: 10px;
@@ -65,6 +65,7 @@ body {
     justify-content: center;
     gap: 15px;
     margin-top: 30px;
+    flex-wrap: wrap; /* ★ ドーナツが折り返して表示されるようにしました */
 }
 .donut {
     width: 60px;
