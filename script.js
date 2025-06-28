@@ -23,10 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 音声ファイル（事前に読み込んでおくとスムーズ）---
     const countSounds = {};
     for (let i = 1; i <= MAX_DONUTS; i++) {
-        countSounds[i] = new Audio(`assets/audio/count_${i}.mp3`);
+        // ★★★ 変更点: .mp3 を .wav に変更 ★★★
+        countSounds[i] = new Audio(`assets/audio/count_${i}.wav`);
     }
-    const correctSound = new Audio('assets/audio/correct.mp3');
-    const popSound = new Audio('assets/audio/pop.mp3');
+    // ★★★ 変更点: .mp3 を .wav に変更 ★★★
+    const correctSound = new Audio('assets/audio/correct.wav');
+    const popSound = new Audio('assets/audio/pop.wav');
 
 
     // --- ゲームの初期化・問題設定 ---
