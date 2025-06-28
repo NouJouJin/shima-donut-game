@@ -52,38 +52,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // --- ドーナツをクリックしたときの処理 ---
-    function handleDonutClick() {
-        if (currentDonutCount >= targetDonutCount) {
-            return; // 必要な数を超えていたら何もしない
-        }
-        
-        currentDonutCount++;
-        
-        // ポップ音を再生
-        popSound.currentTime = 0;
-        popSound.play();
-        
-        // カウントアップ音声を再生
-        if (countSounds[currentDonutCount]) {
-            setTimeout(() => {
-                countSounds[currentDonutCount].play();
-            }, 100); // ポップ音と少しずらす
-        }
-        
-        // お皿にドーナツを追加
-        const donutElement = document.createElement('div');
-        donutElement.classList.add('placed-donut');
-        plateArea.appendChild(donutElement);
-        
-        // 正解かどうかチェック
-        if (currentDonutCount === targetDonutCount) {
-            // これ以上クリックできないようにする
-            disableDonutClicks();
-            
-            // 少し待ってから正解処理へ
-            setTimeout(showCorrect, 800);
-        }
+  function handleDonutClick() {
+    // 既に目標の数に達していたら、何もしない
+    if (currentDonutCount >= targetDonutCount) {
+        return; 
     }
+    
+    currentDonutCount++;
+    
+    // 1. ポップ効果音を再生する
+    popSound.currentTime = 0;
+    popSound.play();
+    
+    // 2. お皿にドーナツの絵を追加する
+    const donutElement = document.createElement('div');
+    donutElement.classList.add('placed-donut');
+    plateArea.appendChild(donutElement);
+    
+    // 正解したかどうかを先に判断しておく
+    const isCorrect = (currentDonutCount === targetDonutCount);
+
+    // 3. 少し間をあけてから、カウント音声を再生する
+    //    （ポップ音と重ならないようにするため）
+    setTimeout(() => {
+        const countSound = countSounds[currentDonutCount];
+        
+        // カウント音声ファイルがあれば再生
+        if (countSound) {
+            countSound.play();
+            
+            // ★★★ ここからが重要な修正部分 ★★★
+            // もしこの一声で正解になった場合
+            if (isCorrect) {
+                // これ以上ドーナツをクリックできないようにする
+                disableDonutClicks();
+                
+                // カウント音声の再生が「終わったら」、showCorrect関数を呼び出す
+                // { once: true } は、このイベントを一度きりにするための設定です
+                countSound.addEventListener('ended', showCorrect, { once: true });
+            }
+
+        } else if (isCorrect) {
+            // カウント音声ファイルがないけれど正解だった場合（念のため）
+            disableDonutClicks();
+            setTimeout(showCorrect, 800); // 従来通りの待ち時間
+        }
+    }, 200); // ポップ音から0.2秒後にカウント音声を再生
+}
     
     // --- 正解処理 ---
     function showCorrect() {
