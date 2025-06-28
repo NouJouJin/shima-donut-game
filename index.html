@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ドーナツどうぞ！ゲーム</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="game-container">
+        <!-- 問題表示エリア -->
+        <div id="question-area">
+            <img id="character-img" src="" alt="キャラクター">
+            <div id="message-box">
+                <p id="message-text">〇〇に ドーナツを 〇こ あげよう！</p>
+            </div>
+        </div>
+
+        <!-- ドーナツを置くお皿 -->
+        <div id="plate-area">
+        </div>
+
+        <!-- 選択するドーナツ置き場 -->
+        <div id="donut-stock-area">
+            <div class="donut"></div>
+            <div class="donut"></div>
+            <div class="donut"></div>
+            <div class="donut"></div>
+            <div class="donut"></div>
+        </div>
+    </div>
+
+    <!-- 正解時に表示するモーダル -->
+    <div id="correct-modal" class="hidden">
+        <p>せいかい！</p>
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
